@@ -57,6 +57,19 @@ void getInterface(int codInterface)
         printf("|            Resultado(s) encontrado(s)             |\n");
         printf("-----------------------------------------------------\n");
     }
+
+    if(codInterface==5)
+    {
+        printf("-----------------------------------------------------\n");
+        printf("|  Bem vindo ao Sistema de Controle de DOCS da UFU  |\n");
+        printf("-----------------------------------------------------\n");
+        printf("| 1 - Cadastrar Documento                           |\n");
+        printf("| 2 - Mostrar Todos                                 |\n");
+        printf("| 3 - Buscar Documento Especifico                   |\n");
+        printf("| 4 - Buscar Tipo Especifico                        |\n");
+        printf("| 9 - Sair                                          |\n");
+        printf("-----------------------------------------------------\n");
+    }
 }
 
 void register_document()
@@ -311,18 +324,10 @@ void menu()
     int opcao;
     struct document P[30];
     int indiceCadastro = 0;
-
+    getInterface(5);
     while(1)
     {
-        printf("-----------------------------------------------------\n");
-        printf("|  Bem vindo ao Sistema de Controle de DOCS da UFU  |\n");
-        printf("-----------------------------------------------------\n");
-        printf("| 1 - Cadastrar Documento                           |\n");
-        printf("| 2 - Mostrar Todos                                 |\n");
-        printf("| 3 - Buscar Documento Especifico                   |\n");
-        printf("| 4 - Buscar Tipo Especifico                        |\n");
-        printf("| 9 - Sair                                          |\n");
-        printf("-----------------------------------------------------\n");
+
         printf("Digite uma opcao: ");
         scanf("%d", &opcao);
 
