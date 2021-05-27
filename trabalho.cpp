@@ -21,7 +21,8 @@ void getInterface(int codInterface)
     1 - mostra a interface "Documento(s) Cadastrado(s)"
     2 - mostra a interface "Buscar Documento Especifico"
     3 - mostra a interface "Buscar Tipo Especifico"
-    4 - mostra a interface "Resultado(s) encontrado(s)"
+    5 - mostra a interface "Bem vindo ao Sistema de Controle de DOCS da UFU"
+    6 - mostra a interface "Buscar Documento para Revogar"
     */
     if(codInterface==0)
     {
@@ -67,9 +68,83 @@ void getInterface(int codInterface)
         printf("| 2 - Mostrar Todos                                 |\n");
         printf("| 3 - Buscar Documento Especifico                   |\n");
         printf("| 4 - Buscar Tipo Especifico                        |\n");
+        printf("| 6 - Revogar Documento                             |\n");
         printf("| 9 - Sair                                          |\n");
         printf("-----------------------------------------------------\n");
     }
+
+    if(codInterface==6)
+    {
+        printf("-----------------------------------------------------\n");
+        printf("|          Buscar Documento para Revogar            |\n");
+        printf("-----------------------------------------------------\n");
+    }
+}
+
+void revoga_document(document doc)
+{
+    system("cls");
+    // solicita a tela "Buscar Documento para Revogar" para a função getInterface
+    getInterface(6);
+
+    FILE *document_file = fopen("document.bin", "r+b");
+    FILE *document_aux = fopen("document_aux.bin", "a+b");
+    if(document_file == NULL)
+    {
+        printf("\nFalha ao abrir arquivo(s)");
+        printf("\nPressione <Enter> para continuar...");
+        scanf("%*c");
+        fseek(stdin, 0, SEEK_END);
+        return;
+    }
+
+    int found_document = 0;
+    char tipoDoc[100];
+    int idDoc;
+
+    // Coleta os dados a serem buscados
+    setbuf(stdin, NULL);
+    printf("Digite o tipo do documento: ");
+    printf("ATA | PORTARIA | RESOLUCAO\n");
+    scanf("%[^\n]s", tipoDoc);
+    setbuf(stdin, NULL);
+    printf("Digite o ID do documento: ");
+    scanf("%d", &idDoc);
+
+    int flag = 0;
+
+    while(fread(&doc, sizeof(document), 1, document_file))
+    {
+
+        if(idDoc==doc.id && (strcmp(doc.tipo,tipoDoc)==0))
+        {
+            doc.vigencia = 2;
+            flag = 1;
+        }
+
+        doc.id;
+        doc.ano;
+        doc.numero;
+        doc.tipo;
+        doc.conselho;
+        doc.vigencia;
+        doc.texto;
+
+
+        fseek(stdin, 0, SEEK_END);
+        fwrite(&doc, sizeof(doc), 1, document_aux);
+    }
+
+    fclose(document_file);
+    fclose(document_aux);
+
+    remove("document.bin");
+    rename("document_aux.bin","document.bin");
+
+    if (flag == 1) printf("\ndocumento  revogado com sucesso!\n");
+    else printf("\ndocumento nao encontrado!\n");
+    printf("\nPressione <Enter> para continuar...");
+    scanf("%*c");
 }
 
 void register_document()
@@ -319,15 +394,14 @@ void fetch_type(document doc)
 
 void menu()
 {
-    system("cls");
     document doc;
     int opcao;
     struct document P[30];
     int indiceCadastro = 0;
-    getInterface(5);
     while(1)
     {
-
+        system("cls");
+        getInterface(5);
         printf("Digite uma opcao: ");
         scanf("%d", &opcao);
 
@@ -335,6 +409,7 @@ void menu()
         if(opcao == 2) list_document();
         if(opcao == 3) fetch_document(doc);
         if(opcao == 4) fetch_type(doc);
+        if(opcao == 6) revoga_document(doc);
         if(opcao == 9) return;
     }
 }
@@ -351,7 +426,7 @@ int main()
     ok Buscar Todos
     ok Buscar Tipo Específico
     ok Buscar Documento Específico
-    - Revogar
+    ok Revogar
     - Cadastrar Conselho
     - Revogar Conselho
 */
